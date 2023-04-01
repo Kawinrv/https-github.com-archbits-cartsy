@@ -52,13 +52,14 @@ public class ProductController {
     }
 
     @GetMapping("/product/{id}")
-    public Optional<Product> read(@PathVariable Long id){
+    public Product read(@PathVariable Long id){
         try {
-            return repo.findById(id);
+            Optional<Product> product = repo.findById(id);
+            return product.get();
             
         }catch(Exception e){
             e.printStackTrace();
-            return Optional.empty();
+            return null;
         }finally{
 
         }
