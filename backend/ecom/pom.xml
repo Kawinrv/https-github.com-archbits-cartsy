@@ -39,19 +39,28 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
 			<version>3.0.0</version>
+<<<<<<< HEAD
          </dependency>
          <dependency>
+=======
+
+		</dependency>
+		<dependency>
+>>>>>>> b9364eea35f391eae1017b2825d97f6059907404
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>3.0.0</version>
 
 		</dependency>
+<<<<<<< HEAD
 		
 		<dependency>
     <groupId>io.springfox</groupId>
     <artifactId>springfox-swagger2</artifactId>
     <version>3.0.0</version>
 </dependency>
+=======
+>>>>>>> b9364eea35f391eae1017b2825d97f6059907404
 
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
 		<dependency>
