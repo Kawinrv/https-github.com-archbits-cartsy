@@ -15,7 +15,6 @@ import com.cartsy.ecom.repository.ProductCategoryRepository;
 @RestController
 public class ProductCategoryController {
 
-	// TODO: LOGGER
 	@Autowired
 	ProductCategoryRepository repo;
 
