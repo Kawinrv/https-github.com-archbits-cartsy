@@ -14,8 +14,8 @@ import com.cartsy.ecom.repository.ProductCategoryRepository;
 
 @RestController
 public class ProductCategoryController {
-<<<<<<< HEAD
 
+	// TODO: LOGGER
 	@Autowired
 	ProductCategoryRepository repo;
 
@@ -34,43 +34,15 @@ public class ProductCategoryController {
 	}
 
 	@GetMapping("/productcategory")
-	public List<ProductCategory> read() {
-		try {
-			return repo.findAll();
-		} catch (Exception e) {
-=======
-	
-	//TODO: LOGGER
-	@Autowired
-	ProductCategoryRepository repo;
-	
-	@PostMapping("/productcategory") 
-    public boolean create(@RequestBody ProductCategory productCategory ){
-        try {
-            repo.save(productCategory);
-            return true;
-        }catch(Exception e){
-            e.printStackTrace();
-            return false;
-        }finally{
-
-        }
-
-    }
-	
-	@GetMapping("/productcategory")
 	public List<ProductCategory> read(){
 		try {
 			return repo.findAll();
 		}catch(Exception e) {
->>>>>>> f6f70ea71d4e49e7112b2457bb011d420ca94ef2
 			e.printStackTrace();
 			return new ArrayList<>();
 		}
-	}
-<<<<<<< HEAD
-=======
-	
->>>>>>> f6f70ea71d4e49e7112b2457bb011d420ca94ef2
+	}<<<<<<<HEAD=======
+
+	>>>>>>>f6f70ea71d4e49e7112b2457bb011d420ca94ef2
 
 }

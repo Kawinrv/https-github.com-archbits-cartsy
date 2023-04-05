@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<<<<<<< HEAD
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-=======
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
->>>>>>> f6f70ea71d4e49e7112b2457bb011d420ca94ef2
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -19,11 +16,8 @@
 	<name>ecom</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-<<<<<<< HEAD
 		<!-- 		<java.version>11</java.version> -->
-=======
 		<!-- <java.version>11</java.version> -->
->>>>>>> f6f70ea71d4e49e7112b2457bb011d420ca94ef2
 	</properties>
 	<dependencies>
 		<dependency>
@@ -37,17 +31,12 @@
 		</dependency>
 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> f6f70ea71d4e49e7112b2457bb011d420ca94ef2
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-<<<<<<< HEAD
-=======
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
@@ -60,7 +49,6 @@
 			<version>3.0.0</version>
 
 		</dependency>
->>>>>>> f6f70ea71d4e49e7112b2457bb011d420ca94ef2
 
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
 		<dependency>
@@ -71,15 +59,12 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 		</dependency>
-<<<<<<< HEAD
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-=======
 
->>>>>>> f6f70ea71d4e49e7112b2457bb011d420ca94ef2
 
 
 	</dependencies>
