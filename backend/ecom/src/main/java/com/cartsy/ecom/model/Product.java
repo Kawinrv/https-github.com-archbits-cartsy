@@ -1,15 +1,21 @@
 package com.cartsy.ecom.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import java.util.Date;
 
 @Entity
 @Table(name="products")
+@JsonInclude(Include.NON_NULL)
 public class Product {
 
 
     @Id
-    int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer id; 
     @Column(name = "product_s_desc")
     String product_s_desc; 
     @Column(name = "product_l_desc")
@@ -35,10 +41,10 @@ public class Product {
     @Column(name = "category_id")
     int category_id;
     
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getProduct_s_desc() {
