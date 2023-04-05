@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import com.cartsy.ecom.model.*;
 import com.cartsy.ecom.repository.ProductRepository;
@@ -29,7 +31,7 @@ public class ProductController {
     private ProductRepository repo;
    
     @PostMapping("/product") 
-    public boolean create(@RequestBody Product product ){
+    public ResponseEntity create(@RequestBody Product product ){
         try {
         	logger.info("Creating new product...");
         	
@@ -39,10 +41,10 @@ public class ProductController {
         	
         	logger.debug("Successfully created a new product. Product details: " + mapper.writeValueAsString(product));
 
-            return true;
+            return ResponseEntity.status(HttpStatus.OK).body(new RestResponse(200, "Success!", "",""));
         }catch(Exception e){
             logger.error("Error occurred",e);
-            return false;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RestResponse(500, "Failure!", "",e.getLocalizedMessage()));
         }finally{
 
         }
