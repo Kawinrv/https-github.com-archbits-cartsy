@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
+<<<<<<< HEAD
 @Table(name = "buyers")
 public class Buyer {
 
@@ -40,6 +41,40 @@ public class Buyer {
 	String buyer_rating;
 
 	@Column(name = "buyer_profile_pic")
+=======
+@Table(name="buyers")
+public class Buyer {
+	
+	@Id
+	@Column(name="id")
+	int id;
+	
+	@Column(name="buyer_name")
+	String buyer_name;
+	
+	@Column(name="buyer_phone")
+	String buyer_phone;
+	
+	@Column(name="buyer_email")
+	String buyer_email;
+	
+	@Column(name="buyer_payment_options")
+	String buyer_payment_options;
+	
+	@Column(name="buyer_addresses")
+	String buyer_addresses;
+	
+	@Column(name="buyer_doj")
+	Date buyer_doj;
+	
+	@Column(name="buyer_status")
+	String buyer_status;
+	
+	@Column(name="buyer_rating")
+	String buyer_rating;
+	
+	@Column(name="buyer_profile_pic")
+>>>>>>> f6f70ea71d4e49e7112b2457bb011d420ca94ef2
 	String buyer_profile_pic;
 
 	public int getId() {
@@ -121,5 +156,16 @@ public class Buyer {
 	public void setBuyer_profile_pic(String buyer_profile_pic) {
 		this.buyer_profile_pic = buyer_profile_pic;
 	}
+<<<<<<< HEAD
+=======
+	
+	
+	
+
+
+
+
+
+>>>>>>> f6f70ea71d4e49e7112b2457bb011d420ca94ef2
 
 }
