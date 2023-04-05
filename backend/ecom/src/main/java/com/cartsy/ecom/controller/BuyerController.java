@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,9 @@ import com.cartsy.ecom.repository.BuyerRepository;
 @RestController
 public class BuyerController {
 	
+	final static Logger logger = LoggerFactory.getLogger(BuyerController.class);
+
+	
 	@Autowired
 	BuyerRepository repo;
 	
@@ -28,7 +33,7 @@ public class BuyerController {
 			repo.save(buyer);
 			return true;
 		}catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error occured",e);
 			return false;
 		}
 	}
@@ -40,7 +45,7 @@ public class BuyerController {
 			return repo.findAll();
 			
 		}catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error occured",e);
 			return new ArrayList<Buyer>();
 			
 		}
@@ -53,7 +58,7 @@ public class BuyerController {
 			return repo.findById(id);
 			
 		}catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error occured",e);
 			return Optional.empty();
 			
 		}
@@ -67,7 +72,7 @@ public class BuyerController {
 			return true;
 			
 		}catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error occured",e);
 			return false;
 			
 		}
@@ -80,7 +85,7 @@ public class BuyerController {
             repo.delete(buyer);
             return true;
         }catch(Exception e){
-            e.printStackTrace();
+            logger.error("Error occured",e);
             return false;
         }finally{
 
