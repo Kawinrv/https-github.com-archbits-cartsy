@@ -75,7 +75,3 @@ public class OrderController {  //Vidhur
 
 
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> f6f70ea71d4e49e7112b2457bb011d420ca94ef2

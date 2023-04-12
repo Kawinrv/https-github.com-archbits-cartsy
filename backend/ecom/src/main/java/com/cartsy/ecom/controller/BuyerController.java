@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,87 +20,23 @@ import com.cartsy.ecom.repository.BuyerRepository;
 
 @RestController
 public class BuyerController {
-<<<<<<< HEAD
+	
+	final static Logger logger = LoggerFactory.getLogger(BuyerController.class);
 
-	@Autowired
-	BuyerRepository repo;
-
-=======
 	
 	@Autowired
 	BuyerRepository repo;
 	
->>>>>>> f6f70ea71d4e49e7112b2457bb011d420ca94ef2
 	@PostMapping("/buyer")
 	public boolean create(@RequestBody Buyer buyer) {
 		try {
 			repo.save(buyer);
 			return true;
-<<<<<<< HEAD
-		} catch (Exception e) {
-=======
 		}catch(Exception e) {
->>>>>>> f6f70ea71d4e49e7112b2457bb011d420ca94ef2
-			e.printStackTrace();
+			logger.error("Error occured",e);
 			return false;
 		}
 	}
-<<<<<<< HEAD
-
-	@GetMapping("/buyer")
-	public List<Buyer> read() {
-		try {
-			return repo.findAll();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ArrayList<Buyer>();
-
-		}
-
-	}
-
-	@GetMapping("/buyer/{id}")
-	public Optional<Buyer> read(@PathVariable Long id) {
-		try {
-			return repo.findById(id);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Optional.empty();
-
-		}
-
-	}
-
-	@PutMapping("/buyer/{id}")
-	public boolean update(@RequestBody Buyer buyer) {
-		try {
-			repo.save(buyer);
-			return true;
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-
-		}
-
-	}
-
-	@DeleteMapping("/buyer")
-	public boolean delete(Buyer buyer) {
-		try {
-			repo.delete(buyer);
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		} finally {
-
-		}
-
-	}
-=======
 	
 	
 	@GetMapping("/buyer")
@@ -107,7 +45,7 @@ public class BuyerController {
 			return repo.findAll();
 			
 		}catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error occured",e);
 			return new ArrayList<Buyer>();
 			
 		}
@@ -120,7 +58,7 @@ public class BuyerController {
 			return repo.findById(id);
 			
 		}catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error occured",e);
 			return Optional.empty();
 			
 		}
@@ -134,7 +72,7 @@ public class BuyerController {
 			return true;
 			
 		}catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error occured",e);
 			return false;
 			
 		}
@@ -147,7 +85,7 @@ public class BuyerController {
             repo.delete(buyer);
             return true;
         }catch(Exception e){
-            e.printStackTrace();
+            logger.error("Error occured",e);
             return false;
         }finally{
 
@@ -155,6 +93,5 @@ public class BuyerController {
 
     }
 	
->>>>>>> f6f70ea71d4e49e7112b2457bb011d420ca94ef2
 
 }
