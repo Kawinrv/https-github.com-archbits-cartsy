@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,87 +20,22 @@ import com.cartsy.ecom.repository.SellerRepository;
 
 @RestController
 public class SellerController {
-<<<<<<< HEAD
+	
+	final static Logger logger = LoggerFactory.getLogger(SellerController.class);
 
 	@Autowired
 	SellerRepository repo;
-
-=======
 	
-	@Autowired
-	SellerRepository repo;
-	
->>>>>>> f6f70ea71d4e49e7112b2457bb011d420ca94ef2
 	@PostMapping("/seller")
 	public boolean create(@RequestBody Seller seller) {
 		try {
 			repo.save(seller);
 			return true;
-<<<<<<< HEAD
-		} catch (Exception e) {
-=======
 		}catch(Exception e) {
->>>>>>> f6f70ea71d4e49e7112b2457bb011d420ca94ef2
-			e.printStackTrace();
+			logger.error("Error occured",e);
 			return false;
 		}
 	}
-<<<<<<< HEAD
-
-	@GetMapping("/seller")
-	public List<Seller> read() {
-		try {
-			return repo.findAll();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ArrayList<Seller>();
-
-		}
-
-	}
-
-	@GetMapping("/seller/{id}")
-	public Optional<Seller> read(@PathVariable Long id) {
-		try {
-			return repo.findById(id);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Optional.empty();
-
-		}
-
-	}
-
-	@PutMapping("/seller/{id}")
-	public boolean update(@RequestBody Seller seller) {
-		try {
-			repo.save(seller);
-			return true;
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-
-		}
-
-	}
-
-	@DeleteMapping("/seller")
-	public boolean delete(Seller seller) {
-		try {
-			repo.delete(seller);
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		} finally {
-
-		}
-
-	}
-=======
 	
 	
 	@GetMapping("/seller")
@@ -107,7 +44,7 @@ public class SellerController {
 			return repo.findAll();
 			
 		}catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error occured",e);
 			return new ArrayList<Seller>();
 			
 		}
@@ -120,7 +57,7 @@ public class SellerController {
 			return repo.findById(id);
 			
 		}catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error occured",e);
 			return Optional.empty();
 			
 		}
@@ -134,7 +71,7 @@ public class SellerController {
 			return true;
 			
 		}catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error occured",e);
 			return false;
 			
 		}
@@ -147,7 +84,7 @@ public class SellerController {
 	            repo.delete(seller);
 	            return true;
 	        }catch(Exception e){
-	            e.printStackTrace();
+	            logger.error("Error occured",e);
 	            return false;
 	        }finally{
 
@@ -155,6 +92,5 @@ public class SellerController {
 
 	    }
 	
->>>>>>> f6f70ea71d4e49e7112b2457bb011d420ca94ef2
 
 }
