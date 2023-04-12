@@ -4,50 +4,23 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @Entity
-<<<<<<< HEAD
-@Table(name = "sellers")
-public class Seller {
-
-	@Id
-	@Column(name = "id")
-	int id;
-
-	@Column(name = "seller_name")
-	String seller_name;
-
-	@Column(name = "seller_tin")
-	String seller_tin;
-
-	@Column(name = "seller_rating")
-	String seller_rating;
-
-	@Column(name = "seller_address")
-	String seller_address;
-
-	@Column(name = "seller_phone")
-	String seller_phone;
-
-	@Column(name = "seller_email")
-	String seller_email;
-
-	@Column(name = "seller_doj")
-	Date seller_doj;
-
-	@Column(name = "seller_status")
-	String seller_status;
-
-	@Column(name = "seller_profile_pic")
-=======
 @Table(name="sellers")
+@JsonInclude(Include.NON_NULL)
 public class Seller {
 	
 	@Id
 	@Column(name="id")
-	int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	Integer id;
 
 	@Column(name="seller_name")
 	String seller_name;
@@ -74,14 +47,13 @@ public class Seller {
 	String seller_status;
 	
 	@Column(name="seller_profile_pic")
->>>>>>> f6f70ea71d4e49e7112b2457bb011d420ca94ef2
 	String seller_profile_pic;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -157,10 +129,7 @@ public class Seller {
 		this.seller_profile_pic = seller_profile_pic;
 	}
 
-<<<<<<< HEAD
-=======
 
  
 
->>>>>>> f6f70ea71d4e49e7112b2457bb011d420ca94ef2
 }
