@@ -5,18 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.cartsy.ecom.controller.BuyerController;
-
-@SpringBootApplication 
+@SpringBootApplication
 public class EcomApplication {
 	final static Logger logger = LoggerFactory.getLogger(EcomApplication.class);
 
 	public static void main(String[] args) {
-		
+
 		logger.info("Hello , we are starting up the ecommerce application cartsy!");
 		SpringApplication.run(EcomApplication.class, args);
 	}
-
-	
 
 }
