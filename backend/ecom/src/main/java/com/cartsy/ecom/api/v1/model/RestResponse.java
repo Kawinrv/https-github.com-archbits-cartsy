@@ -1,4 +1,4 @@
-package com.cartsy.ecom.model;
+package com.cartsy.ecom.api.v1.model;
 
 
 public class RestResponse {

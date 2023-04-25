@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS products (
 
 CREATE TABLE IF NOT EXISTS ecom_users (
     id SERIAL PRIMARY KEY,
-    ecom_username VARCHAR(255),
+    ecom_username VARCHAR(255) UNIQUE,
     ecom_password VARCHAR(255),
     ecom_role VARCHAR(255)
 );
