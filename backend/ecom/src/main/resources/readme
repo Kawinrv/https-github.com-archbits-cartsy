@@ -13,3 +13,7 @@ https://legacy.reactjs.org/docs/components-and-props.html
 @@@@@@@@@@@@@@@@@@@@@@@Bootstrap:
 
 https://getbootstrap.com/docs/5.0/components/accordion/
+
+
+@@@@@@@@@@@@@@@@@@@@@@@Local Storage:
+https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage

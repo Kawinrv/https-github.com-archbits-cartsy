@@ -24,7 +24,7 @@ import com.cartsy.ecom.repository.*;
 import com.cartsy.ecom.security.Roles;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping(path="api/v1")
 public class RegistrationController {

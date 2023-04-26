@@ -22,7 +22,7 @@ import com.cartsy.ecom.api.v1.model.RestResponse;
 import com.cartsy.ecom.repository.ProductCategoryRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping(path = "api/v1/private/categories")
 public class ProductCategoryController {
