@@ -34,14 +34,14 @@ const Register = () => {
     
          fetch(url, requestOptions)
              .then(response => {
-                navigate("/login");
-                if(response.status==200){
-                    alert("SUCCESS!");
-                    useNavigate("/Login");
+                
+                if(response.status===200){
+                    navigate("/login");
+                    
                 }else{
-                    alert("FAILURE!");
+                    
                 }
-                response.text()
+                
             })
              .catch(error => {console.log('error', error)});
     }
@@ -50,8 +50,6 @@ const Register = () => {
     return (
         
         <div className='Custom-center-form-container'>
-            <div class="alert alert-danger" role="alert">
-            </div>
             <div className='Custom-center-form'>
                 <div className='h2'><p>Welcome, please register...</p></div>
                 <form onSubmit={register}>

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import com.cartsy.ecom.api.v1.model.RestResponse;
 import com.cartsy.ecom.repository.UserRepository;
 
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController 
 @RequestMapping(path = "api/v1/public")
 public class AuthController {
@@ -38,11 +40,7 @@ public class AuthController {
     				
     				
     				return ResponseEntity.ok()
-    		                .header(
-    		                    HttpHeaders.AUTHORIZATION,
-    		                    JwtTokenUtil.generateJwtToken(foundUser)
-    		                )
-    		                .body(foundUser);
+    		                .body(new RestResponse(200, JwtTokenUtil.generateJwtToken(foundUser),null,null));
     				
     				
     			}else {

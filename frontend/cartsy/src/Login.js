@@ -1,34 +1,82 @@
 import React, { Component } from 'react';
+import { useNavigate } from 'react-router';
+import jwt_decode from "jwt-decode";
 
 
-class Login extends React.Component {
 
-    constructor(props) {
-        super(props);
+const Login = () => {
+
+    
+
+    localStorage.clear();
+    const navigate = useNavigate();
+
+    const login = (e) => {
+        e.preventDefault();
+        
+        const userCredentials = {};
+    
+        userCredentials['username'] = e.target.elements.username.value;
+        userCredentials['password'] = e.target.elements.password.value;
+    
+        const url = "http://localhost:8080/api/v1/public/login";
+    
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Accept", "application/json");
+    
+        var raw = JSON.stringify(
+            userCredentials
+        );
+    
+        console.log(raw);
+    
+         var requestOptions = {
+             method: 'POST',
+             headers: myHeaders,
+             body: raw
+         };
+    
+         fetch(url, requestOptions)
+             .then(response => {
+                if(response.status===200){
+                    
+                    response.json().then((data) => {
+                        localStorage.setItem("jwt", data.message);
+                        localStorage.setItem("subject", jwt_decode(data.message).sub);
+                        localStorage.setItem("role", jwt_decode(data.message).ROLE);
+
+
+                        navigate("/home");
+                    });
+                    
+                    
+                }else{
+                   
+                }
+            })
+             .catch(error => {console.log('error', error)});
     }
 
 
 
-    render() {
+   
         return (
             <div className='Custom-center-form-container'>
                 <div className='Custom-center-form'>
-                    <div className='h2'><p>Welcome, please signin...</p></div>
-
+                    <div className='h2'><p>Welcome, please sign-in...</p></div>
+                    <form onSubmit={login}>
                     <div className='form-group'>
-                        <input type="text" className='form-control mt-1' placeholder="username"></input>
-                        <input type="password" className='form-control mt-1' placeholder="password"></input>
+                        <input name="username" type="text" className='form-control mt-1' placeholder="username"></input>
+                        <input name="password" type="password" className='form-control mt-1' placeholder="password"></input>
                     </div>
                     <br />
                     <button className='btn btn-primary form-control'>Signin</button>
+                    </form>
                 </div>
             </div>
 
         );
-
-    }
-
-
 }
 
 export default Login;
