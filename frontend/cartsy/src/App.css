@@ -37,11 +37,12 @@
 }
 
 .Custom-center-form{
-  width: 440px;
-  padding-top: 30px ;
-  padding-bottom: 30px ;
-  padding-left: 30px ;
-  padding-right: 30px ;
+  border: 1px solid #e7e7e7;
+  border-radius: 4px;
+  padding: 15px;
+  width: 420px;
+  padding-top: 30px;
+  padding-bottom: 30px;
   background-color: lightgray;
 }
 
