@@ -7,6 +7,7 @@ import Navbar from './Navbar';
 import Home from './Home'
 import MyShop from './MyShop';
 import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap/dist/js/bootstrap.bundle"
 
 
 

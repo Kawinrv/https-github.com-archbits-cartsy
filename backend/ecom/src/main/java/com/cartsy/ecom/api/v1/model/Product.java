@@ -39,9 +39,9 @@ public class Product {
     @Column(name = "brand")
     String brand ;
     @Column(name = "first_available")
-    Date firstAvailable;
+    Date firstAvailable = new Date(System.currentTimeMillis());
     @Column(name = "created_date")
-    Date createdDate;
+    Date createdDate = new Date(System.currentTimeMillis());;
     @Column(name = "category_id")
     int categoryId;
 	public Integer getId() {
