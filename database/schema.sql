@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS products (
     product_actual_price INT ,
     product_sale_price   INT ,
     product_images VARCHAR(255),
-    seller_id TEXT,
+    seller_id INT REFERENCES ecom_users(id),
     quantity INT,
     color VARCHAR(255),
     brand VARCHAR(255),

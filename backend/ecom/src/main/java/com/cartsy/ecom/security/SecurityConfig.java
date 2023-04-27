@@ -76,11 +76,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         	.antMatchers("/api/v1/register").permitAll()
             .antMatchers("/api/v1/public/**").permitAll()
             .antMatchers(HttpMethod.GET, "/v2/api-docs").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/v1/private/products").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/v1/private/categories").permitAll()
+
+
             
             // Our private endpoints
             .antMatchers("/api/v1/private/admin/**").hasRole("CARTSY_ADMIN")
             
             .antMatchers("/api/v1/private/buyers/**").hasRole("CARTSY_BUYER")
+            
+            .antMatchers(HttpMethod.POST, "/api/v1/private/products").hasRole("CARTSY_SELLER")
             .antMatchers("/api/v1/private/sellers/**").hasRole("CARTSY_SELLER")
             .anyRequest().authenticated();
 

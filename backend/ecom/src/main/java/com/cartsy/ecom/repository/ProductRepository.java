@@ -20,6 +20,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 	@Query("SELECT p FROM Product p WHERE p.categoryId = :category")
 	List<Product> filterByCategory(@Param("category") Integer category);
 	
+	@Query("SELECT p FROM Product p WHERE p.sellerId = :sellerId")
+	List<Product> filterBySeller(@Param("sellerId") Integer sellerId);
+	
 	@Query("SELECT p FROM Product p WHERE p.createdDate >= :creationDate")
 	List<Product> filterByCreationDate(@Param("creationDate") Date creationDate);
 

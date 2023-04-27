@@ -38,6 +38,11 @@ public class ProductController {
 	public ResponseEntity create(@RequestBody Product product) {
 		try {
 			logger.info("Creating new product...");
+			
+			Date now = new Date(System.currentTimeMillis());
+			
+			product.setFirstAvailable(now);
+			product.setCreatedDate(now);
 
 			repo.save(product);
 
@@ -104,6 +109,26 @@ public class ProductController {
 			logger.debug("Searching products. Search text :" + searchText);
 
 			List<Product> products = repo.search(searchText);
+			return ResponseEntity.status(HttpStatus.OK).body(products);
+
+		} catch (Exception e) {
+			logger.error("Error occurred", e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new RestResponse(500, "Failure!", "", e.getLocalizedMessage()));
+		} finally {
+
+		}
+	}
+	
+	@GetMapping("public/products/seller/{sellerId}")
+	public ResponseEntity readBySeller(@PathVariable Integer sellerId) {
+		logger.info("Reading products by seller...");
+
+		try {
+
+			logger.debug("Reading products by seller. Seller id :" + sellerId);
+
+			List<Product> products = repo.filterBySeller(sellerId);
 			return ResponseEntity.status(HttpStatus.OK).body(products);
 
 		} catch (Exception e) {

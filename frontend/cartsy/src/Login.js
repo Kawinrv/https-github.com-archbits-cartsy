@@ -45,6 +45,7 @@ const Login = () => {
                         localStorage.setItem("jwt", data.message);
                         localStorage.setItem("subject", jwt_decode(data.message).sub);
                         localStorage.setItem("role", jwt_decode(data.message).ROLE);
+                        localStorage.setItem("id", jwt_decode(data.message).ID);
 
 
                         navigate("/home");
