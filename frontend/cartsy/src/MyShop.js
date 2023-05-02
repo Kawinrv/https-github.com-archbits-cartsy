@@ -7,6 +7,7 @@ const MyShop = () => {
 
     var [categories, setCategories] = useState(undefined);
     var [products, setProducts] = useState(undefined);
+    var [filteredProducts, setFilteredProducts] = useState(filteredProducts);
     
     const saveProduct = (e) => {
         e.preventDefault();
@@ -111,6 +112,7 @@ const MyShop = () => {
 
                     response.json().then((data) => {
                         setProducts(data);
+                        setFilteredProducts(data);
                     });
 
 
@@ -126,7 +128,20 @@ const MyShop = () => {
         loadProducts();
     }, []);
 
-
+    function search(e){
+        var searchText = e.target.value;
+        if(searchText==undefined || searchText==''){
+            setFilteredProducts(products);
+        }
+        var filteredSet = [];
+        products.forEach(element => {
+            if(element.productName.includes(searchText)){
+                filteredSet.push(element);
+            }
+        });
+        setFilteredProducts(filteredSet);
+            
+    }
 
 
     const [show, setShow] = useState(false);
@@ -138,33 +153,44 @@ const MyShop = () => {
     return (
         <div>
             <div className="container">
+            <br />
+                <h2 class="muted">My Products</h2>
                 <br />
-                <Button variant="primary" onClick={handleShow}>
+                <div className='row'>
+                    <div className='col-md-2'> 
+                    <Button variant="primary" onClick={handleShow}>
                     Add Product
                 </Button>
+                </div>
+                <div className='col-md-2'> <input placeholder='search...' onChange={search}></input></div>
+                </div>
+                
                 <br/>
                 <div className="container">
                 <br/>
-                        
+                <div className="row">  
                     {
-                        products!==undefined ? products.map(item => {
+                        
+                        filteredProducts!==undefined ? filteredProducts.map(item => {
                                 return (
-                                    <div className="row">
+                                   
 
-                                    <div  className="col-sm">
-                                    <div key={item.id} className="card w-100" >
+                                    <div  className="col-md-4 mt-2">
+                                    <div key={item.id} className="card" >
                                         <div className="card-body">
                                             <h5 className="card-title">{item.productName}</h5>
                                             <p className="card-text">{item.productSDesc}</p>
-                                            <a href="#" className="btn btn-primary">Details</a>
+                                            <a href="/sproduct" className="btn btn-primary">Details</a>
                                         </div>
                                     </div>
                                     </div>
-                                    </div>
+                                    
+                                    
 
                                 );
                             }):""
                     }
+                    </div>
 
                         
                 </div>

@@ -6,6 +6,7 @@ import Register from './Register'
 import Navbar from './Navbar';
 import Home from './Home'
 import MyShop from './MyShop';
+import SellerProduct from './SellerProduct';
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.bundle"
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/register" element={<Register/>}/>
         <Route path="/home" element={<Home/>}/>
         <Route path="/myshop" element={<MyShop/>}/>
+        <Route path="/sproduct" element={<SellerProduct/>}/>
       </Routes>
     </BrowserRouter>
     </React.StrictMode>
