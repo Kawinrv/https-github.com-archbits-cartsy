@@ -10,29 +10,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import com.cartsy.ecom.api.v1.model.*;
+import com.cartsy.ecom.repository.FileRepository;
 import com.cartsy.ecom.repository.ProductRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.InputStream;
 import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping(path = "api/v1")
+@PropertySource("classpath:application.properties")
 public class ProductController {
 
 	final static Logger logger = LoggerFactory.getLogger(ProductController.class);
 	final static ObjectMapper mapper = new ObjectMapper();
 	@Autowired
 	private ProductRepository repo;
+	@Autowired
+	Environment env;
 
 	@PostMapping("private/products")
 	public ResponseEntity create(@RequestBody Product product) {
@@ -50,7 +62,7 @@ public class ProductController {
 
 			logger.debug("Successfully created a new product. Product details: " + mapper.writeValueAsString(product));
 
-			return ResponseEntity.status(HttpStatus.OK).body(new RestResponse(200, "Success!", "", ""));
+			return ResponseEntity.status(HttpStatus.OK).body(new RestResponse(200, product.getId().toString(), "", ""));
 		} catch (Exception e) {
 			logger.error("Error occurred", e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -61,6 +73,38 @@ public class ProductController {
 
 	}
 
+	@PostMapping("private/products/{id}/images/{view}")
+	public ResponseEntity create(@RequestParam("file") MultipartFile file, @PathVariable Integer id, @PathVariable Integer view) {
+		try {
+			logger.info("Uploading product images...");
+			
+			String basePath = env.getProperty("files.basepath");
+			
+			
+			FileRepository.saveFile(basePath 
+									+ env.getProperty("files.pathseparator") 
+									+ id 
+									+ env.getProperty("files.pathseparator") 
+									+ "images" 
+									+ env.getProperty("files.pathseparator"), 
+								file, view);
+			
+			
+
+			logger.info("Successfully uploaded a new product image.");
+
+
+			return ResponseEntity.status(HttpStatus.OK).body(new RestResponse(200, "Success!", "", ""));
+		} catch (Exception e) {
+			logger.error("Error occurred", e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new RestResponse(500, "Failure!", "", e.getLocalizedMessage()));
+		} finally {
+
+		}
+
+	}
+	
 	@GetMapping("public/products")
 	public ResponseEntity read() {
 		try {
@@ -193,6 +237,33 @@ public class ProductController {
 			logger.debug("Reading product by Id. ProductId :" + id);
 			Product p = repo.findById(id).get();
 			return ResponseEntity.status(HttpStatus.OK).body(p);
+
+		} catch (Exception e) {
+			logger.error("Error occurred", e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new RestResponse(500, "Failure!", "", e.getLocalizedMessage()));
+
+		} finally {
+
+		}
+	}
+	
+	@GetMapping("public/products/{id}/images/{view}")
+	public ResponseEntity readImagesById(@PathVariable Integer id, @PathVariable Integer view) {
+		logger.info("Reading product images by Id...");
+
+		try {
+		   
+			
+			Resource file = FileRepository.readProductImage(env.getProperty("files.basepath") 
+										+ env.getProperty("files.pathseparator") 
+										+ id 
+										+ env.getProperty("files.pathseparator") 
+										+ "images" 
+										+ env.getProperty("files.pathseparator") 
+										+ view );
+			
+			return ResponseEntity.status(HttpStatus.OK).contentType(file.getFile().getName().contains("png")?MediaType.IMAGE_PNG:MediaType.IMAGE_JPEG).body(file);
 
 		} catch (Exception e) {
 			logger.error("Error occurred", e);

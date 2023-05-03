@@ -4,6 +4,13 @@ CREATE TABLE IF NOT EXISTS categories (
 
 );
 
+CREATE TABLE IF NOT EXISTS ecom_users (
+    id SERIAL PRIMARY KEY,
+    ecom_username VARCHAR(255) UNIQUE,
+    ecom_password VARCHAR(255),
+    ecom_role VARCHAR(255)
+);
+
 CREATE TABLE IF NOT EXISTS products (
     id SERIAL PRIMARY KEY,
     product_name VARCHAR(255),
@@ -19,13 +26,6 @@ CREATE TABLE IF NOT EXISTS products (
     first_available DATE NOT NULL,
     created_date DATE NOT NULL,
     category_id INT REFERENCES categories(id)
-);
-
-CREATE TABLE IF NOT EXISTS ecom_users (
-    id SERIAL PRIMARY KEY,
-    ecom_username VARCHAR(255) UNIQUE,
-    ecom_password VARCHAR(255),
-    ecom_role VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS sellers (
