@@ -26,6 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import com.cartsy.ecom.api.v1.model.*;
+import com.cartsy.ecom.repository.DealRepository;
 import com.cartsy.ecom.repository.FileRepository;
 import com.cartsy.ecom.repository.ProductRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,7 +43,9 @@ public class ProductController {
 	final static Logger logger = LoggerFactory.getLogger(ProductController.class);
 	final static ObjectMapper mapper = new ObjectMapper();
 	@Autowired
-	private ProductRepository repo;
+	private ProductRepository pRepo;
+	@Autowired
+	private DealRepository dRepo;
 	@Autowired
 	Environment env;
 
@@ -56,7 +59,7 @@ public class ProductController {
 			product.setFirstAvailable(now);
 			product.setCreatedDate(now);
 
-			repo.save(product);
+			pRepo.save(product);
 
 			logger.info("Successfully created a new product.");
 
@@ -109,7 +112,7 @@ public class ProductController {
 	public ResponseEntity read() {
 		try {
 			logger.info("Reading all products...");
-			List<Product> products = repo.findAll();
+			List<Product> products = pRepo.findAll();
 			return ResponseEntity.status(HttpStatus.OK).body(products);
 
 		} catch (Exception e) {
@@ -131,7 +134,7 @@ public class ProductController {
 			logger.debug("Reading paginated products. Page size :" + pageSize);
 
 			Pageable page = PageRequest.of(pageNo, PAGE_SIZE);
-			List<Product> products = repo.findAll(page).getContent();
+			List<Product> products = pRepo.findAll(page).getContent();
 			return ResponseEntity.status(HttpStatus.OK).body(products);
 
 		} catch (Exception e) {
@@ -152,7 +155,7 @@ public class ProductController {
 
 			logger.debug("Searching products. Search text :" + searchText);
 
-			List<Product> products = repo.search(searchText);
+			List<Product> products = pRepo.search(searchText);
 			return ResponseEntity.status(HttpStatus.OK).body(products);
 
 		} catch (Exception e) {
@@ -172,7 +175,7 @@ public class ProductController {
 
 			logger.debug("Reading products by seller. Seller id :" + sellerId);
 
-			List<Product> products = repo.filterBySeller(sellerId);
+			List<Product> products = pRepo.filterBySeller(sellerId);
 			return ResponseEntity.status(HttpStatus.OK).body(products);
 
 		} catch (Exception e) {
@@ -191,7 +194,64 @@ public class ProductController {
 		try {
 			logger.debug("Reading products by category. CategoryId :" + category);
 
-			List<Product> products = repo.filterByCategory(category);
+			List<Product> products = pRepo.filterByCategory(category);
+			return ResponseEntity.status(HttpStatus.OK).body(products);
+
+		} catch (Exception e) {
+			logger.error("Error occurred", e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new RestResponse(500, "Failure!", "", e.getLocalizedMessage()));
+		} finally {
+
+		}
+	}
+	
+	@GetMapping("public/products/deal/{id}")
+	public ResponseEntity readByDeal(@PathVariable Integer id) {
+		logger.info("Reading products by deal...");
+
+		try {
+			logger.debug("Reading products by deal. DealId :" + id);
+
+			int[] ids = Arrays.stream(dRepo.findById(id).get().getDealProducts().split(",")).mapToInt(Integer::parseInt).toArray();  
+			
+			List<Product> products = pRepo.findByIdIn(ids);
+			return ResponseEntity.status(HttpStatus.OK).body(products);
+
+		} catch (Exception e) {
+			logger.error("Error occurred", e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new RestResponse(500, "Failure!", "", e.getLocalizedMessage()));
+		} finally {
+
+		}
+	}
+	
+	@GetMapping("public/products/latest")
+	public ResponseEntity readByLatest() {
+		logger.info("Reading products by latest...");
+
+		try {
+
+			List<Product> products = pRepo.filterByLatest();
+			return ResponseEntity.status(HttpStatus.OK).body(products);
+
+		} catch (Exception e) {
+			logger.error("Error occurred", e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new RestResponse(500, "Failure!", "", e.getLocalizedMessage()));
+		} finally {
+
+		}
+	}
+	
+	@GetMapping("public/products/bestseller")
+	public ResponseEntity readByBestseller() {
+		logger.info("Reading products by BestSeller...");
+
+		try {
+
+			List<Product> products = pRepo.filterByBestseller();
 			return ResponseEntity.status(HttpStatus.OK).body(products);
 
 		} catch (Exception e) {
@@ -212,10 +272,10 @@ public class ProductController {
 			logger.debug("Reading products by recommendation. ProductId :" + id);
 
 			// read the product's category
-			Optional<Product> p = repo.findById(id);
+			Optional<Product> p = pRepo.findById(id);
 			List<Product> products = new ArrayList<Product>();
 			if (p.isPresent()) {
-				products = repo.recommendation(p.get().getCategoryId());
+				products = pRepo.recommendation(p.get().getCategoryId());
 
 			}
 			return ResponseEntity.status(HttpStatus.OK).body(products);
@@ -235,7 +295,7 @@ public class ProductController {
 
 		try {
 			logger.debug("Reading product by Id. ProductId :" + id);
-			Product p = repo.findById(id).get();
+			Product p = pRepo.findById(id).get();
 			return ResponseEntity.status(HttpStatus.OK).body(p);
 
 		} catch (Exception e) {
@@ -281,7 +341,7 @@ public class ProductController {
 
 		try {
 			logger.info("Saving product. ProductId :" + id);
-			repo.save(product);
+			pRepo.save(product);
 			return ResponseEntity.status(HttpStatus.OK).body(new RestResponse(200, "Success!", "", ""));
 		} catch (Exception e) {
 			logger.error("Error occurred", e);
@@ -299,7 +359,7 @@ public class ProductController {
 
 		try {
 			logger.info("Deleting product. ProductId :" + id);
-			repo.deleteById(id);
+			pRepo.deleteById(id);
 			return ResponseEntity.status(HttpStatus.OK).body(new RestResponse(200, "Success!", "", ""));
 		} catch (Exception e) {
 			logger.error("Error occured", e);

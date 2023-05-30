@@ -16,7 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.cartsy.ecom.api.v1.model.*;
+import com.cartsy.ecom.repository.CartRepository;
 import com.cartsy.ecom.repository.OrderRepository;
+import com.cartsy.ecom.repository.ProductRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.*;
@@ -30,14 +32,41 @@ public class OrderController {
 	final static ObjectMapper mapper = new ObjectMapper();
 	@Autowired
 	private OrderRepository repo;
+	@Autowired
+	private ProductRepository pRepo;
+	@Autowired
+	private CartRepository cRepo;
 
 	@PostMapping()
 	public ResponseEntity create(@RequestBody Order order) {
 		try {
 			logger.info("Creating new order...");
 
+			order.setDateOfOrder(new Date(System.currentTimeMillis()));
+			
+			Integer totalPrice = 0;
+			String productIds = order.getProductIds();
+			
+			String[] productIdArr = productIds.split(",");
+			
+			for(String productId: productIdArr ) {
+				totalPrice+= pRepo.findById(Integer.valueOf(productId)).get().getProductSalePrice();
+			}
+			
+			order.setPrice(totalPrice);
+			
 			repo.save(order);
-
+			
+			for(String productId: productIdArr ) {
+				pRepo.updateOrderCount(Integer.valueOf(productId));
+			}
+			
+			Optional<Cart> cart = cRepo.findById(order.getEcomUserId());
+			if(cart.isPresent()) {
+				cart.get().setProducts("");
+				cRepo.save(cart.get());
+			}
+			
 			logger.info("Successfully created a new order.");
 
 			logger.debug("Successfully created a new order. Order details: " + mapper.writeValueAsString(order));
@@ -76,24 +105,7 @@ public class OrderController {
 		}
 	}
 	
-	@GetMapping("/seller")
-	public ResponseEntity readBySeller(@RequestParam Integer sellerId) {
-		logger.info("Reading orders by seller...");
-
-		try {
-			logger.debug("Reading orders by seller. sellerId :" + sellerId);
-
-			List<Order> orders = repo.bySeller(sellerId);
-			return ResponseEntity.status(HttpStatus.OK).body(orders);
-
-		} catch (Exception e) {
-			logger.error("Error occurred", e);
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new RestResponse(500, "Failure!", "", e.getLocalizedMessage()));
-		} finally {
-
-		}
-	}
+	
 
 	@GetMapping("/{id}")
 	public ResponseEntity readById(@PathVariable Integer id) {

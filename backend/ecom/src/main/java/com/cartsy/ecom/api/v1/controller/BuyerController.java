@@ -1,5 +1,6 @@
 package com.cartsy.ecom.api.v1.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import com.cartsy.ecom.repository.BuyerRepository;
 import com.cartsy.ecom.security.AuthenticatedUserDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping(path = "api/v1")
 public class BuyerController {
@@ -70,7 +72,7 @@ public class BuyerController {
 			logger.info("Reading buyer by Id...");
 
 			logger.debug("Reading buyer by Id. BuyerId :" + id);
-			Buyer p = repo.findById(id).get();
+			Buyer p = repo.findByEcomUserId(id).get(0);
 			return ResponseEntity.status(HttpStatus.OK).body(p);
 
 		} catch (BadCredentialsException e) {
@@ -91,18 +93,18 @@ public class BuyerController {
 	@PutMapping("private/buyers/{id}")
 	public ResponseEntity update(@PathVariable Integer id, @RequestBody Buyer buyer) {
 		try {
-			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-			if (principal instanceof AuthenticatedUserDetails) {
-
-				Integer authId = ((AuthenticatedUserDetails) principal).getId();
-				if (authId != id) {
-					throw new BadCredentialsException("Different user than authenticated.");
-				}
-
-			} else {
-				throw new BadCredentialsException("Different user than authenticated.");
-			}
+//			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//
+//			if (principal instanceof AuthenticatedUserDetails) {
+//
+//				Integer authId = ((AuthenticatedUserDetails) principal).getId();
+//				if (authId != id) {
+//					throw new BadCredentialsException("Different user than authenticated.");
+//				}
+//
+//			} else {
+//				throw new BadCredentialsException("Different user than authenticated.");
+//			}
 
 			logger.info("Saving buyer...");
 

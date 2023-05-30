@@ -50,6 +50,11 @@
   height: 360px;
 }
 
+.Custom-carousel-960{
+  width: 960px;
+  height: 360px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -13,11 +13,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
 
 
 
-	@Query("SELECT o FROM Order o WHERE o.buyerId = :id")
+	@Query("SELECT o FROM Order o WHERE o.ecomUserId = :id")
 	List<Order> byBuyer(@Param("id") Integer id);
-
-	@Query("SELECT o FROM Order o WHERE o.sellerId = :id")
-	List<Order> bySeller(@Param("id") Integer id);
 
 	@Query("SELECT o FROM Order o WHERE o.dateOfOrder >= :creationDate")
 	List<Order> filterByCreationDate(@Param("creationDate") Date creationDate);

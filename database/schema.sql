@@ -4,13 +4,6 @@ CREATE TABLE IF NOT EXISTS categories (
 
 );
 
-CREATE TABLE IF NOT EXISTS ecom_users (
-    id SERIAL PRIMARY KEY,
-    ecom_username VARCHAR(255) UNIQUE,
-    ecom_password VARCHAR(255),
-    ecom_role VARCHAR(255)
-);
-
 CREATE TABLE IF NOT EXISTS products (
     id SERIAL PRIMARY KEY,
     product_name VARCHAR(255),
@@ -19,13 +12,49 @@ CREATE TABLE IF NOT EXISTS products (
     product_actual_price INT ,
     product_sale_price   INT ,
     product_images VARCHAR(255),
-    seller_id INT REFERENCES ecom_users(id),
+    seller_id TEXT,
     quantity INT,
+    order_count INT,
     color VARCHAR(255),
     brand VARCHAR(255),
     first_available DATE NOT NULL,
     created_date DATE NOT NULL,
     category_id INT REFERENCES categories(id)
+);
+
+CREATE TABLE IF NOT EXISTS ecom_users (
+    id SERIAL PRIMARY KEY,
+    ecom_username VARCHAR(255),
+    ecom_password VARCHAR(255),
+    ecom_role VARCHAR(255)
+);
+
+
+CREATE TABLE IF NOT EXISTS addresses (
+    id SERIAL PRIMARY KEY,
+    hno INT,
+    line1 VARCHAR(255),
+    line2 VARCHAR(255),
+    city VARCHAR(255),
+    address_state VARCHAR(255),
+    country VARCHAR(255),
+    pincode VARCHAR(255),
+    phone VARCHAR(255),
+    ecom_user INT REFERENCES ecom_users(id)
+);
+
+CREATE TABLE IF NOT EXISTS paymentinfos (
+    id SERIAL PRIMARY KEY,
+    card_name VARCHAR(255),
+    card_no VARCHAR(255),
+    card_cvv VARCHAR(255),
+    card_doe VARCHAR(255),
+    ecom_user INT REFERENCES ecom_users(id)
+);
+
+CREATE TABLE IF NOT EXISTS carts (
+    id SERIAL PRIMARY KEY,
+    products TEXT 
 );
 
 CREATE TABLE IF NOT EXISTS sellers (
@@ -60,9 +89,8 @@ CREATE TABLE IF NOT EXISTS buyers (
 
 CREATE TABLE IF NOT EXISTS orders (
     id SERIAL PRIMARY KEY,
-    buyer_id INT REFERENCES buyers(id),
-    seller_id INT REFERENCES sellers(id),
-    product_id INT REFERENCES products(id),
+    ecom_user INT REFERENCES ecom_users(id),
+    product_ids TEXT,
     price INT,
     mode_of_payment VARCHAR(255),
     date_of_order DATE NOT NULL,
@@ -70,13 +98,23 @@ CREATE TABLE IF NOT EXISTS orders (
     date_of_shipment DATE,
     date_of_delivery DATE,
     order_status VARCHAR(255),
-    tracking_number VARCHAR(255)
-
-
-    
+    tracking_number VARCHAR(255)  
 );
 
 
+CREATE TABLE IF NOT EXISTS deals (
+    id SERIAL PRIMARY KEY,
+    deal_name TEXT,
+    deal_desc TEXT,
+    deal_url TEXT,
+    deal_products TEXT,
+    deal_image TEXT,
+    deal_category TEXT,
+    deal_start_date DATE,
+    deal_end_date DATE
+
+
+);
 
 CREATE TABLE IF NOT EXISTS disputes (
     id SERIAL PRIMARY KEY,

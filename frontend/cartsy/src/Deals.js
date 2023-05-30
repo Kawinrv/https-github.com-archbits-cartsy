@@ -5,7 +5,7 @@ import Carousel from 'react-bootstrap/Carousel';
 
 
 
-const Home = () => {
+const Deals = () => {
 
     var [deals, setDeals] = useState([]);
 
@@ -52,6 +52,7 @@ const Home = () => {
          <br />
                 <div className="container">
                     <br />
+                    <h2 className="muted">All Deals</h2>
                     <div className="row">
                         
                     <div className="col">
@@ -88,4 +89,4 @@ const Home = () => {
     </div>);
 }
 
-export default Home;
+export default Deals;

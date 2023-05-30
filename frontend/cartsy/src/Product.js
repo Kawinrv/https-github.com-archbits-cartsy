@@ -6,7 +6,7 @@ import Modal from 'react-bootstrap/Modal';
 
 
 
-const SellerProduct = () => {
+const Product = () => {
 
     var [categories, setCategories] = useState(categories);
 
@@ -21,13 +21,13 @@ const SellerProduct = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const saveProduct = (e) => {
+    const addToCart = (e) => {
         e.preventDefault();
 
         
 
 
-        const url = "http://localhost:8080/api/v1/private/products";
+        const url = "http://localhost:8080/api/v1/private/buyers/cart/"+localStorage.getItem("id")+"?productId="+product.id;
 
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -196,14 +196,14 @@ const SellerProduct = () => {
         <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
                 <li className="breadcrumb-item"><a href="/">Home</a></li>
-                <li className="breadcrumb-item"><a href="/myshop">My Shop</a></li>
+                <li className="breadcrumb-item"><a href="/search">Search</a></li>
                 <li className="breadcrumb-item active" aria-current="page">{product != undefined ? resolveCategory(product.categoryId) : ""}</li>
             </ol>
         </nav>
         <div className="float-end">
             <div className="btn-group">
-            <button className="btn btn-danger">Delete</button>
-            <button className="btn btn-primary" onClick={handleShow}>Edit</button>
+            <button className="btn btn-success">Buy</button>
+            <button className="btn btn-warning" onClick={addToCart}>Add To Cart</button>
             </div>
         </div>
 
@@ -267,42 +267,8 @@ const SellerProduct = () => {
             
         </div>
 
-        <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{product.productName}</Modal.Title>
-                </Modal.Header>
-                <form onSubmit={saveProduct}>
-
-                    <Modal.Body>
-                        <div className='form-group'>
-
-                            <select name="categoryId" type="text" className='form-control mt-1' value={product.categoryId} >
-                                {
-                                    categories != undefined ? categories.map(item => {
-                                        return (<option value={item.id}>{item.levels}</option>);
-                                    }) : ""
-                                }
-                            </select>
-                            <input name="productName" type="text" className='form-control mt-1' defaultValue={product.productName} onChange={handleChange}></input>
-                            <input name="productSDesc" type="text" className='form-control mt-1'  defaultValue={product.productSDesc} onChange={handleChange}></input>
-                            <textarea name="productLDesc" type="text" className='form-control mt-1'  defaultValue={product.productLDesc} onChange={handleChange}></textarea>
-                            <input name="price" type="text" className='form-control mt-1' defaultValue={product.productActualPrice} onChange={handleChange}></input>
-                            <input name="quantity" type="text" className='form-control mt-1' defaultValue={product.quantity} onChange={handleChange}></input>
-                            <input name="brand" type="text" className='form-control mt-1' defaultValue={product.brand} onChange={handleChange}></input>
-                            
-
-
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-
-                        <button className="btn btn-primary" onClick={handleClose}>
-                            Save Changes
-                        </button>
-                    </Modal.Footer>
-                </form>
-            </Modal>
+        
     </div>);
 }
 
-export default SellerProduct;
+export default Product;

@@ -34,6 +34,8 @@ public class Product {
     int sellerId ;
     @Column(name = "quantity")
     int quantity ;
+    @Column(name = "order_count")
+    int orderCount ;
     @Column(name = "color")
     String color;
     @Column(name = "brand")
@@ -97,6 +99,12 @@ public class Product {
 	}
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+	public int getOrderCount() {
+		return orderCount;
+	}
+	public void setOrderCount(int orderCount) {
+		this.orderCount = orderCount;
 	}
 	public String getColor() {
 		return color;
