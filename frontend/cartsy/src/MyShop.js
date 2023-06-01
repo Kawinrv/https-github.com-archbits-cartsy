@@ -198,7 +198,7 @@ const MyShop = () => {
         <div>
             <div className="container">
                 <br />
-                <h2 class="muted">My Products</h2>
+                <h2 className="muted">My Products</h2>
                 <br />
                 <div className='row'>
                     <div className='col-md-2'>
@@ -267,27 +267,27 @@ const MyShop = () => {
                             <input name="price" type="text" className='form-control mt-1' placeholder="Price"></input>
                             <input name="quantity" type="text" className='form-control mt-1' placeholder="Quantity"></input>
                             <input name="brand" type="text" className='form-control mt-1' placeholder="Brand"></input>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label col-form-label-sm">Front View</label>
-                                <div class="col-sm-10">
+                            <div className="form-group row">
+                                <label className="col-sm-2 col-form-label col-form-label-sm">Front View</label>
+                                <div className="col-sm-10">
                                     <input name="image_1" type="file" accept="image/png, image/jpg, image/jpeg" className='form-control mt-1'></input>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label col-form-label-sm">Left View</label>
-                                <div class="col-sm-10">
+                            <div className="form-group row">
+                                <label className="col-sm-2 col-form-label col-form-label-sm">Left View</label>
+                                <div className="col-sm-10">
                                     <input name="image_2" type="file" accept="image/png, image/jpg, image/jpeg" className='form-control mt-1' ></input>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label col-form-label-sm">Right View</label>
-                                <div class="col-sm-10">
+                            <div className="form-group row">
+                                <label className="col-sm-2 col-form-label col-form-label-sm">Right View</label>
+                                <div className="col-sm-10">
                                     <input name="image_3" type="file" accept="image/png, image/jpg, image/jpeg" className='form-control mt-1' ></input>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label col-form-label-sm">Top View</label>
-                                <div class="col-sm-10">
+                            <div className="form-group row">
+                                <label className="col-sm-2 col-form-label col-form-label-sm">Top View</label>
+                                <div className="col-sm-10">
                                     <input name="image_4" type="file" accept="image/png, image/jpg, image/jpeg" className='form-control mt-1' ></input>
                                 </div>
                             </div>

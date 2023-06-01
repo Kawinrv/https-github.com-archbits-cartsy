@@ -22,17 +22,12 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id; 
 	
-	@NotNull()
-	@Column(name = "buyer_id")
-    Integer buyerId;
+	@Column(name="ecom_user")
+	Integer ecomUserId;
 	
 	@NotNull()
-	@Column(name = "seller_id")
-    Integer sellerId;
-	
-	@NotNull()
-	@Column(name = "product_id")
-    Integer productId;
+	@Column(name = "product_ids")
+    String productIds;
 	
 	@NotNull()
 	@Column(name = "price")
@@ -70,28 +65,22 @@ public class Order {
 		this.id = id;
 	}
 
-	public Integer getBuyerId() {
-		return buyerId;
+	
+
+	public Integer getEcomUserId() {
+		return ecomUserId;
 	}
 
-	public void setBuyerId(Integer buyerId) {
-		this.buyerId = buyerId;
+	public void setEcomUserId(Integer ecomUserId) {
+		this.ecomUserId = ecomUserId;
 	}
 
-	public Integer getSellerId() {
-		return sellerId;
+	public String getProductIds() {
+		return productIds;
 	}
 
-	public void setSellerId(Integer sellerId) {
-		this.sellerId = sellerId;
-	}
-
-	public Integer getProductId() {
-		return productId;
-	}
-
-	public void setProductId(Integer productId) {
-		this.productId = productId;
+	public void setProductIds(String productIds) {
+		this.productIds = productIds;
 	}
 
 	public Integer getPrice() {

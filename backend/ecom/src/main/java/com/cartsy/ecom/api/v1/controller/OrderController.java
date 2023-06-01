@@ -1,6 +1,8 @@
 package com.cartsy.ecom.api.v1.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,12 +18,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.cartsy.ecom.api.v1.model.*;
+import com.cartsy.ecom.repository.CartRepository;
 import com.cartsy.ecom.repository.OrderRepository;
+import com.cartsy.ecom.repository.ProductRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.*;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", methods= {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+
 @RestController
 @RequestMapping(path = "api/v1/private/orders")
 public class OrderController {
@@ -30,19 +37,59 @@ public class OrderController {
 	final static ObjectMapper mapper = new ObjectMapper();
 	@Autowired
 	private OrderRepository repo;
+	@Autowired
+	private ProductRepository pRepo;
+	@Autowired
+	private CartRepository cRepo;
 
 	@PostMapping()
 	public ResponseEntity create(@RequestBody Order order) {
 		try {
 			logger.info("Creating new order...");
 
-			repo.save(order);
+			order.setDateOfOrder(new Date(System.currentTimeMillis()));
+			
+			Integer totalPrice = 0;
+			String products = order.getProductIds();
+			
+			//products is stored as a JSON with productId vs quantity
+			
+			if(products!=null && !products.isEmpty()) {
+				ObjectMapper mapper = new ObjectMapper();
+				Map<String, Integer> prodMap = mapper.readValue(products, Map.class);
+				
+				for(String productId: prodMap.keySet() ) {
+					totalPrice+= pRepo.findById(Integer.valueOf(productId)).get().getProductSalePrice();
+				}
+				
+				order.setPrice(totalPrice);
+				
+				repo.save(order);
+				
+				for(String productId: prodMap.keySet() ) {
+					pRepo.updateOrderCount(Integer.valueOf(productId));
+				}
+				
+				Optional<Cart> cart = cRepo.findById(order.getEcomUserId());
+				if(cart.isPresent()) {
+					cart.get().setProducts("");
+					cRepo.save(cart.get());
+				}
+				
+				logger.info("Successfully created a new order.");
 
-			logger.info("Successfully created a new order.");
+				logger.debug("Successfully created a new order. Order details: " + mapper.writeValueAsString(order));
 
-			logger.debug("Successfully created a new order. Order details: " + mapper.writeValueAsString(order));
-
-			return ResponseEntity.status(HttpStatus.OK).body(new RestResponse(200, "Success!", "", ""));
+				return ResponseEntity.status(HttpStatus.OK).body(new RestResponse(200, "Success!", "", ""));
+				
+				
+			}else {
+				logger.error("Error occurred, cart empty.");
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+						.body(new RestResponse(500, "Failure!", "", ""));
+			}
+			
+			
 		} catch (Exception e) {
 			logger.error("Error occurred", e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -76,24 +123,7 @@ public class OrderController {
 		}
 	}
 	
-	@GetMapping("/seller")
-	public ResponseEntity readBySeller(@RequestParam Integer sellerId) {
-		logger.info("Reading orders by seller...");
-
-		try {
-			logger.debug("Reading orders by seller. sellerId :" + sellerId);
-
-			List<Order> orders = repo.bySeller(sellerId);
-			return ResponseEntity.status(HttpStatus.OK).body(orders);
-
-		} catch (Exception e) {
-			logger.error("Error occurred", e);
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new RestResponse(500, "Failure!", "", e.getLocalizedMessage()));
-		} finally {
-
-		}
-	}
+	
 
 	@GetMapping("/{id}")
 	public ResponseEntity readById(@PathVariable Integer id) {

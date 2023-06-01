@@ -17,4 +17,7 @@ public interface BuyerRepository extends JpaRepository<Buyer, Integer>{
 	@Query("SELECT b FROM Buyer b WHERE b.buyerDoj >= :creationDate")
 	List<Buyer> filterByCreationDate(@Param("creationDate") Date creationDate);
 
+	@Query("SELECT b FROM Buyer b WHERE b.ecomUserId = :id")
+	List<Buyer> findByEcomUserId(@Param("id") Integer id);
+
 }

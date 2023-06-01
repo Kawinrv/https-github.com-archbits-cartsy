@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cartsy.ecom.api.v1.model.Buyer;
+import com.cartsy.ecom.api.v1.model.Cart;
 import com.cartsy.ecom.api.v1.model.EcomUser;
 import com.cartsy.ecom.api.v1.model.NewUser;
 import com.cartsy.ecom.api.v1.model.RestResponse;
@@ -24,7 +25,11 @@ import com.cartsy.ecom.repository.*;
 import com.cartsy.ecom.security.Roles;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@CrossOrigin(origins = "http://localhost:3000")
+import org.springframework.web.bind.annotation.RequestMethod;
+
+
+@CrossOrigin(origins = "http://localhost:3000", methods= {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+
 @RestController
 @RequestMapping(path="api/v1")
 public class RegistrationController {
@@ -36,6 +41,8 @@ public class RegistrationController {
 	private SellerRepository sRepo;
 	@Autowired
 	private UserRepository uRepo;
+	@Autowired
+	private CartRepository cRepo;
 
 	@PostMapping("public/register")
 	public ResponseEntity create(@RequestBody NewUser user) {
@@ -69,7 +76,15 @@ public class RegistrationController {
 					b.setBuyerDoj(new Date(System.currentTimeMillis()));
 					
 					bRepo.save(b);
+					
+					
+					Cart cart = new Cart();
+					cart.setId(ecomUser.getId());
+					cRepo.save(cart);
 				}
+				
+				
+				
 			}
 
 			logger.info("Successfully created a new user.");
