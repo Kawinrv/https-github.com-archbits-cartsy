@@ -5,12 +5,15 @@ import $ from 'jquery';
 import jQuery from 'jquery';
 import "bootstrap-table/dist/bootstrap-table.min.js";
 import "bootstrap-table/dist/bootstrap-table.min.css";
+import { Alert, Button } from "react-bootstrap";
+
 
 
 
 
 const Checkout = () => {
 
+    const [showAlert, setShowAlert] = useState(false);
 
     var [cart, setCart] = useState({ products: "" });
     var [products, setProducts] = useState([]);
@@ -123,16 +126,19 @@ const Checkout = () => {
 
     function loadProducts(cart) {
 
-        if (cart != undefined && cart.products != undefined) {
+        if (cart != undefined && cart.products != undefined && cart.products != '') {
 
-            let productIds = cart.products.split(",");
+            
+
+            let cartProductsJSON = JSON.parse(cart.products);
+
             let productList = [];
 
-            productIds.forEach(element => {
+            Object.keys(cartProductsJSON).forEach((key) => {
 
 
 
-                const url = "http://localhost:8080/api/v1/public/products/" + element;
+                const url = "http://localhost:8080/api/v1/public/products/" + key;
 
                 var myHeaders = new Headers();
                 myHeaders.append("Content-Type", "application/json");
@@ -151,38 +157,51 @@ const Checkout = () => {
                         if (response.status === 200) {
 
                             response.json().then((data) => {
+                                data["qty"] = cartProductsJSON[key];
+                                data["total"] = cartProductsJSON[key]*data["productSalePrice"];
                                 productList.push(data);
                                 setProducts(productList);
 
-                                if (productList.length == productIds.length)
+                                if(productList.length==Object.keys(cartProductsJSON).length){
+
                                     $('#table').bootstrapTable({
                                         pagination: true,
                                         search: true,
                                         sort: true,
-                                        columns: [{
-                                            field: 'productName',
-                                            title: 'Name',
-                                            sortable: true,
+                                        columns: [ {
+                                          field: 'productName',
+                                          title: 'Name',
+                                          sortable: true,
                                         },
+                                        {
+                                            field: 'qty',
+                                            title: 'Qty',
+                                            sortable: true
+                                          }, 
                                         {
                                             field: 'productSDesc',
                                             title: 'Description',
                                             sortable: true
-                                        }, {
-                                            field: 'productActualPrice',
-                                            title: 'Original Price',
-                                            sortable: true
-                                        }, {
+                                          },{
+                                          field: 'productActualPrice',
+                                          title: 'Original Price',
+                                          sortable: true
+                                        },{
                                             field: 'productSalePrice',
                                             title: 'Price',
                                             sortable: true
-                                        }
+                                          },
+                                          {
+                                            field: 'total',
+                                            title: 'Total',
+                                            sortable: true
+                                          }
 
                                         ],
                                         data: productList
-                                    });
-
-
+                                      });
+                                
+                                    }
                             });
 
 
@@ -235,9 +254,10 @@ const Checkout = () => {
             .then(response => {
 
                 if (response.status === 200) {
-                    
+                    setShowAlert(true);
                     response.json().then(data => {
                         console.log(data);
+
                        
                     })
 
@@ -261,6 +281,16 @@ const Checkout = () => {
 
     return (<div className="container">
         <br />
+        {
+        showAlert ? <Alert variant="success" onClose={() => setShowAlert(false)} dismissible>
+            <Alert.Heading>
+                <p>Order placed successfully, <a href="/home">continue shopping...</a>!</p>
+
+            </Alert.Heading>
+
+            
+        </Alert> : ""
+        }
         <form onSubmit={placeOrder}>
         <div className="row">
             <div className="col-md">
@@ -346,7 +376,11 @@ const Checkout = () => {
         </div>
         <div className="row">
          
-            <button className="btn btn-success">Place Order</button>
+            {
+                showAlert?
+            <button className="btn btn-success disabled" disabled>Place Order</button>
+            :            <button className="btn btn-success">Place Order</button>}
+
         </div>
         <hr/>
                     </form>

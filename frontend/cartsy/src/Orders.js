@@ -58,6 +58,12 @@ const Orders = () => {
                                     field: 'status',
                                     title: 'Status',
                                     sortable: true
+                                    },{
+                                        field: 'id',
+                                        title: '',
+                                        formatter:(value, row)=> {
+                                            return '<a href="/order?id='+value+'">Details</a>'; 
+                                        }
                                     }
 
                             ],

@@ -16,11 +16,13 @@ import BestSeller from './BestSeller';
 import Cart from './Cart';
 import Checkout from './Checkout';
 import Orders from './Orders';
+import Order from './Order';
 import Product from './Product';
 import SellerProduct from './SellerProduct';
 import AdminSettings from "./AdminSettings";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import "../node_modules/bootstrap/dist/js/bootstrap.min.js"
+
 
 
 
@@ -48,6 +50,7 @@ function App() {
         <Route path="/cart" element={<Cart/>}/>
         <Route path="/checkout" element={<Checkout/>}/>
         <Route path="/orders" element={<Orders/>}/>
+        <Route path="/order" element={<Order/>}/>
         <Route path="/myshop" element={<MyShop/>}/>
         <Route path="/sproduct" element={<SellerProduct/>}/>
       </Routes>

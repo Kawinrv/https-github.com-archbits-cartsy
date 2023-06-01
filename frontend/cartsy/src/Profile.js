@@ -6,6 +6,8 @@ import jQuery from 'jquery';
 import "bootstrap-table/dist/bootstrap-table.min.js";
 import "bootstrap-table/dist/bootstrap-table.min.css";
 import { Button } from "react-bootstrap";
+import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+
 
 
 
@@ -190,6 +192,65 @@ const Profile = () => {
             .catch(error => { console.log('error', error) });
     }
 
+    function deleteAddress(addressId) {
+        alert("cal")
+        const url = "http://localhost:8080/api/v1/private/address/" + addressId;
+
+        var myHeaders = new Headers();
+        myHeaders.append("Accept", "application/json");
+
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("jwt"));
+
+        var requestOptions = {
+            method: 'DELETE',
+            headers: myHeaders
+
+        };
+
+        fetch(url, requestOptions)
+            .then(response => {
+                if (response.status === 200) {
+
+                    loadAddresses();
+
+
+                } else {
+
+                }
+            })
+            .catch(error => { console.log('error', error) });
+    }
+
+    function deletePaymentInfo(paymentInfoId) {
+        alert("cal2")
+
+        const url = "http://localhost:8080/api/v1/private/paymentinfo/" + paymentInfoId;
+
+        var myHeaders = new Headers();
+        myHeaders.append("Accept", "application/json");
+
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("jwt"));
+
+        var requestOptions = {
+            method: 'DELETE',
+            headers: myHeaders
+
+        };
+
+        fetch(url, requestOptions)
+            .then(response => {
+                if (response.status === 200) {
+
+                    loadPaymentinfos();
+
+
+                } else {
+
+                }
+            })
+            .catch(error => { console.log('error', error) });
+    }
+
     function loadAddresses() {
         const url = "http://localhost:8080/api/v1/private/address/" + localStorage.getItem("id");
 
@@ -326,7 +387,7 @@ const Profile = () => {
 
 
         </div>
-        <hr/>
+        <hr />
         <div className="row">
             <div className="col">
                 <h3>Shipping</h3>
@@ -338,7 +399,7 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
-            
+
             <div className="row">
                 {
 
@@ -348,10 +409,18 @@ const Profile = () => {
 
                             <div className="col-md-4 mt-2">
                                 <div key={item.id} className="card" >
+                                    <div class="card-header">
+                                    <h5 className="card-title">{item.country}</h5>
 
+                                        <div className="float-end">
+                                            <div className="btn-group">
+                                                <button className="fa-solid fa-trash" onClick={()=>deleteAddress(item.id)}></button>
+                                                <button className="fa-solid fa-pen"></button>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div className="card-body">
 
-                                        <h5 className="card-title">{item.country}</h5>
                                         <p className="card-text">{item.hNo}</p>
                                         <p className="card-text">{item.line1}</p>
                                         <p className="card-text">{item.line2}</p>
@@ -374,7 +443,7 @@ const Profile = () => {
         </div>
 
 
-        <hr/>
+        <hr />
         <div className="row">
             <div className="col">
                 <h3>Payment</h3>
@@ -395,9 +464,17 @@ const Profile = () => {
 
                             <div className="col-md-4 mt-2">
                                 <div key={item.id} className="card" >
+                                <div class="card-header">
+                                    <h5 className="card-title">{item.cardName}</h5>
 
+                                        <div className="float-end">
+                                            <div className="btn-group">
+                                                <button className="fa-solid fa-trash" onClick={()=>deletePaymentInfo(item.id)}></button>
+                                                <button className="fa-solid fa-pen"></button>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div className="card-body">
-                                        <h2 className="card-text">{item.cardName}</h2>
                                         <p className="card-title">{item.cardNo}</p>
                                         <p className="card-text">{item.cardDoe}</p>
 
@@ -412,7 +489,7 @@ const Profile = () => {
                 }
             </div>
 
-            <hr/>
+            <hr />
 
         </div>
 

@@ -86,6 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/v1/private/buyers/**").hasRole("CARTSY_BUYER")
             .antMatchers("/api/v1/private/address/**").hasRole("CARTSY_BUYER")
             .antMatchers("/api/v1/private/paymentinfo/**").hasRole("CARTSY_BUYER")
+            .antMatchers("/api/v1/private/reviews/**").hasRole("CARTSY_BUYER")
             
             .antMatchers(HttpMethod.POST, "/api/v1/private/products").hasRole("CARTSY_SELLER")
             .antMatchers("/api/v1/private/sellers/**").hasRole("CARTSY_SELLER")

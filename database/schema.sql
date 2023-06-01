@@ -116,6 +116,15 @@ CREATE TABLE IF NOT EXISTS deals (
 
 );
 
+CREATE TABLE IF NOT EXISTS reviews (
+    id SERIAL PRIMARY KEY,
+    ecom_user INT REFERENCES ecom_users(id),
+    ecom_username VARCHAR ,
+    product_id INT REFERENCES products(id),
+    review_details VARCHAR,
+    review_rating INT
+);
+
 CREATE TABLE IF NOT EXISTS disputes (
     id SERIAL PRIMARY KEY,
     order_id INT REFERENCES orders(id)

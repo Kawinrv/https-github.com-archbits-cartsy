@@ -18,42 +18,47 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cartsy.ecom.api.v1.model.Address;
-import com.cartsy.ecom.api.v1.model.PaymentInfo;
-import com.cartsy.ecom.api.v1.model.Product;
+import com.cartsy.ecom.api.v1.model.Review;
 import com.cartsy.ecom.api.v1.model.RestResponse;
 import com.cartsy.ecom.repository.*;
 import com.cartsy.ecom.security.AuthenticatedUserDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.springframework.web.bind.annotation.RequestMethod;
-
-
-
-
 @CrossOrigin(origins = "http://localhost:3000", methods= {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
-
 @RestController
 @RequestMapping(path="api/v1")
-public class PaymentInfoController {
-	final static Logger logger = LoggerFactory.getLogger(PaymentInfoController.class);
+public class ReviewController {
+	final static Logger logger = LoggerFactory.getLogger(ReviewController.class);
 	final static ObjectMapper mapper = new ObjectMapper();
 	@Autowired
-	private PaymentInfoRepository pRepo;
+	private ReviewRepository rRepo;
 	
 
-	@PostMapping("private/paymentinfo")
-	public ResponseEntity create(@RequestBody PaymentInfo paymentinfo) {
+	@PostMapping("private/reviews")
+	public ResponseEntity create(@RequestBody Review review) {
 		try {
-			logger.info("Creating new paymentinfo...");
+			logger.info("Creating new review...");
+			
+			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-			pRepo.save(paymentinfo);
+			if (principal instanceof AuthenticatedUserDetails) {
 
-			logger.info("Successfully created a new paymentinfo.");
+				Integer authId = ((AuthenticatedUserDetails) principal).getId();
+				if (authId != review.getEcomUser()) {
+					throw new BadCredentialsException("Different user than authenticated.");
+				}
+			} else {
+				throw new BadCredentialsException("Different user than authenticated.");
+			}
 
-			logger.debug("Successfully created a new paymentinfo.  Details: " + mapper.writeValueAsString(paymentinfo));
+			rRepo.save(review);
+
+			logger.info("Successfully created a new review.");
+
+			logger.debug("Successfully created a new review. Review details: " + mapper.writeValueAsString(review));
 
 			return ResponseEntity.status(HttpStatus.OK).body(new RestResponse(200, "Success!", "", ""));
 		}catch (DataIntegrityViolationException | ConstraintViolationException e) {
@@ -70,27 +75,17 @@ public class PaymentInfoController {
 
 	}
 	
-	@GetMapping("private/paymentinfo/{id}")
-	public ResponseEntity readById(@PathVariable Integer id) {
+	@GetMapping("private/reviews/{productId}")
+	public ResponseEntity readByProductId(@PathVariable Integer productId) {
 		try {
-			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			
 
-			if (principal instanceof AuthenticatedUserDetails) {
+			logger.info("Reading reviews by Id...");
 
-				Integer authId = ((AuthenticatedUserDetails) principal).getId();
-				if (authId != id) {
-					throw new BadCredentialsException("Different user than authenticated.");
-				}
-
-			} else {
-				throw new BadCredentialsException("Different user than authenticated.");
-			}
-
-			logger.info("Reading paymentinfos by Id...");
-
-			logger.debug("Reading paymentinfos by Id. BuyerId :" + id);
-			List<PaymentInfo> a = pRepo.findByEcomUserId(id);
-			return ResponseEntity.status(HttpStatus.OK).body(a);
+			logger.debug("Reading reviews by Id. Product Id :" + productId);
+			
+			List<Review> r = rRepo.findByProductId(productId);
+			return ResponseEntity.status(HttpStatus.OK).body(r);
 
 		} catch (BadCredentialsException e) {
 			logger.error("Error occurred", e);
@@ -107,13 +102,13 @@ public class PaymentInfoController {
 		}
 	}
 	
-	@DeleteMapping("private/paymentinfo/{id}")
+	@DeleteMapping("private/review/{id}")
 	public ResponseEntity delete(@PathVariable Integer id) {
-		logger.info("Deleting payment info...");
+		logger.info("Deleting review...");
 
 		try {
-			logger.info("Deleting paymentInfo. paymentInfoId :" + id);
-			pRepo.deleteById(id);
+			logger.info("Deleting review. AddressId :" + id);
+			rRepo.deleteById(id);
 			return ResponseEntity.status(HttpStatus.OK).body(new RestResponse(200, "Success!", "", ""));
 		} catch (Exception e) {
 			logger.error("Error occured", e);

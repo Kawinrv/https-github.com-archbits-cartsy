@@ -72,7 +72,7 @@ const BestSeller = () => {
 
                                                 <h5 className="card-title">{item.productName}</h5>
                                                 <p className="card-text">{item.productSDesc}</p>
-                                                <a href={"/product?id="+item.id} className="btn btn-primary">Details</a>
+                                                <a href={"/product?id="+item.id} className="btn btn-warning">Details</a>
                                             </div>
                                         </div>
                                     </div>

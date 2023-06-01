@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,12 +21,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cartsy.ecom.api.v1.model.Address;
+import com.cartsy.ecom.api.v1.model.Product;
 import com.cartsy.ecom.api.v1.model.RestResponse;
 import com.cartsy.ecom.repository.*;
 import com.cartsy.ecom.security.AuthenticatedUserDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@CrossOrigin(origins = "http://localhost:3000")
+import org.springframework.web.bind.annotation.RequestMethod;
+
+@CrossOrigin(origins = "http://localhost:3000", methods= {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+
 @RestController
 @RequestMapping(path="api/v1")
 public class AddressController {
@@ -96,6 +101,24 @@ public class AddressController {
 		} finally {
 
 		}
+	}
+	
+	@DeleteMapping("private/address/{id}")
+	public ResponseEntity delete(@PathVariable Integer id) {
+		logger.info("Deleting address...");
+
+		try {
+			logger.info("Deleting address. AddressId :" + id);
+			aRepo.deleteById(id);
+			return ResponseEntity.status(HttpStatus.OK).body(new RestResponse(200, "Success!", "", ""));
+		} catch (Exception e) {
+			logger.error("Error occured", e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new RestResponse(500, "Failure!", "", e.getLocalizedMessage()));
+		} finally {
+
+		}
+
 	}
 
 }

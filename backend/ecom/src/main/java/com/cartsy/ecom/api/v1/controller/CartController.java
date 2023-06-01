@@ -1,7 +1,9 @@
 package com.cartsy.ecom.api.v1.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -23,7 +25,10 @@ import com.cartsy.ecom.api.v1.model.RestResponse;
 import com.cartsy.ecom.repository.CartRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@CrossOrigin(origins = "http://localhost:3000")
+import org.springframework.web.bind.annotation.RequestMethod;
+
+@CrossOrigin(origins = "http://localhost:3000", methods= {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+
 @RestController
 @RequestMapping(path = "api/v1")
 public class CartController {
@@ -38,16 +43,33 @@ public class CartController {
 		try {
 			logger.info("Adding item to cart...");
 
+			ObjectMapper mapper = new ObjectMapper();
+			
 			Optional<Cart> cart = repo.findById(cartId);
 			
 			if(cart.isPresent()) {
+				
 			String products = cart.get().getProducts();
+			//products is stored as a JSON with productId vs quantity
 			
 			if(products!=null && !products.isEmpty()) {
-				products = products.concat(","+productId);
+				
+				Map<String, Integer> prodMap = mapper.readValue(products, Map.class);
+				if(prodMap.get(String.valueOf(productId))!=null) {
+					prodMap.put(String.valueOf(productId), prodMap.get(String.valueOf(productId))+1);
+				}else {
+					prodMap.put(String.valueOf(productId),1);
+				}
+				products = mapper.writeValueAsString(prodMap); 
 				
 			}else {
-				products = String.valueOf(productId);
+				Map<String, Integer> prodMap = new HashMap<String, Integer>();
+				if(prodMap.get(String.valueOf(productId))!=null) {
+					prodMap.put(String.valueOf(productId), prodMap.get(String.valueOf(productId))+1);
+				}else {
+					prodMap.put(String.valueOf(productId),1);
+				}
+				products = mapper.writeValueAsString(prodMap); 
 			}
 			
 			
@@ -96,19 +118,22 @@ public class CartController {
 			
 			if(cart.isPresent()) {
 				String products = cart.get().getProducts();
+				//products is stored as a JSON with productId vs quantity
 				
 				if(products!=null && !products.isEmpty()) {
-					String[] productArr = products.split(",");
-					List<String> updated = Arrays.asList(productArr);
-					updated.removeIf(element -> (element.equals(String.valueOf(productId))));
 					
-					String updatedProducts ="";
-					for(String s: updated) {
-						updatedProducts.concat(s + ",");
-						
+					Map<String, Integer> prodMap = mapper.readValue(products, Map.class);
+					if(prodMap.get(String.valueOf(productId))!=null) {
+						prodMap.remove(String.valueOf(productId));
 					}
+					products = mapper.writeValueAsString(prodMap); 
 					
 				}
+				
+				
+				
+				cart.get().setProducts(products);
+				repo.save(cart.get());
 			}
 
 			logger.info("Successfully deleted item from the cart");

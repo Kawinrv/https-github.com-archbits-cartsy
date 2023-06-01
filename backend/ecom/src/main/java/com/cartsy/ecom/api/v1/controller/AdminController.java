@@ -27,7 +27,10 @@ import com.cartsy.ecom.repository.ProductRepository;
 import com.cartsy.ecom.repository.SellerRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@CrossOrigin(origins = "http://localhost:3000")
+import org.springframework.web.bind.annotation.RequestMethod;
+
+@CrossOrigin(origins = "http://localhost:3000", methods= {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+
 @RestController
 @RequestMapping(path = "api/v1/private/admin")
 public class AdminController {

@@ -65,14 +65,14 @@ const Login = () => {
         return (
             <div className='Custom-center-form-container'>
                 <div className='Custom-center-form'>
-                    <div className='h2'><p>Welcome, please sign-in...</p></div>
+                    <div className='h2'><p>Welcome. Please sign-in...</p></div>
                     <form onSubmit={login}>
                     <div className='form-group'>
                         <input name="username" type="text" className='form-control mt-1' placeholder="username"></input>
                         <input name="password" type="password" className='form-control mt-1' placeholder="password"></input>
                     </div>
                     <br />
-                    <button className='btn btn-primary form-control'>Signin</button>
+                    <button className='btn btn-success form-control'>Signin</button>
                     </form>
                 </div>
             </div>

@@ -25,7 +25,11 @@ import com.cartsy.ecom.repository.*;
 import com.cartsy.ecom.security.Roles;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@CrossOrigin(origins = "http://localhost:3000")
+import org.springframework.web.bind.annotation.RequestMethod;
+
+
+@CrossOrigin(origins = "http://localhost:3000", methods= {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+
 @RestController
 @RequestMapping(path="api/v1")
 public class RegistrationController {
